@@ -1,4 +1,4 @@
-article {
+.tw-followCard {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -6,28 +6,29 @@ article {
     font-size: .8rem;
 }
 
-article header {
+.tw-followCard-header {
     display: flex;
     align-items: center;
     gap: 4px;
 }
 
-article header div {
-    display: flex;
-    flex-direction: column;
-}
-
-article header span {
-    color: #999;
-}
-
-article img {
+.tw-followCard-header-avatar {
     width: 48px;
     height: 48px;
     border-radius: 50%;
 }
 
-article button {
+.tw-followCard-info{
+    display: flex;
+    flex-direction: column;
+}
+
+.tw-followCard-infouserName {
+    color: #999;
+}
+
+
+.tw-followCard-button {
     margin-left: 16px;
     border: 0;
     border-radius: 999px;
