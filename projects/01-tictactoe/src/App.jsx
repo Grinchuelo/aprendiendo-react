@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { Square } from './components/Square.jsx'
 import { TURNS } from './constants.jsx';
-import { checkWinner, checkEndGame } from './logic/board.js';
+import { updateBoard } from './logic/updateBoard.js';
+import { resetGame } from './logic/resetGame.js';
 import { WinnerModal } from './components/WinnerModal.jsx';
-import confetti from "canvas-confetti";
 import './App.css'
 
 
@@ -13,34 +13,12 @@ function App() {
   const [turn, setTurn] = useState(TURNS.X);
   const [winner, setWinner] = useState(null); // null (no terminó el juego) false (empate)
 
-  const resetGame = () => {
-    setBoard(Array(9).fill(null));
-    setTurn(TURNS.X);
-    setWinner(null);
+  const handleReset = () => {
+    resetGame(setBoard, setTurn, setWinner);
   }
 
-  const updateBoard = (index) => {
-    // Si la casilla ya está marcada, o si ya hay un ganador no pasa nada
-    if (board[index] || winner) {
-      return
-    }
-
-    // Actualizar la board
-    const boardTemp = [...board];
-    boardTemp[index] = turn;
-    setBoard(boardTemp);
-
-    // Cambiar de turno
-    const newTurn = turn === TURNS.X ? TURNS.O : TURNS.X;
-    setTurn(newTurn); 
-
-    const newWinner = checkWinner(boardTemp);
-    if (newWinner) {
-      setWinner(newWinner);
-      confetti();
-    } else if (checkEndGame(boardTemp)) {
-      setWinner(false);
-    }
+  const handleUpdateBoard = (index) => {
+    updateBoard(index, board, setBoard, turn, setTurn, winner, setWinner);
   }
 
   return (
@@ -50,7 +28,7 @@ function App() {
         {
           board.map((square, index) => {
             return (
-              <Square key={index} index={index} updateBoard={updateBoard}>
+              <Square key={index} index={index} updateBoard={handleUpdateBoard}>
                 {square}
               </Square>
             )
@@ -66,7 +44,7 @@ function App() {
           </Square>
       </section>
       
-      <WinnerModal winner={winner} resetGame={resetGame}/>
+      <WinnerModal winner={winner} resetGame={handleReset}/>
     </main>
   )
 }
